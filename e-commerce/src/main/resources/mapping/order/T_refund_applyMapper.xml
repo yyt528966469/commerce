@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.order.T_refund_applyMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.order.T_refund_apply">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="c_user_id" jdbcType="VARCHAR" property="c_user_id" />
+    <result column="c_reason" jdbcType="VARCHAR" property="c_reason" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="s_reason" jdbcType="VARCHAR" property="s_reason" />
+    <result column="sh_time" jdbcType="TIMESTAMP" property="sh_time" />
+    <result column="order_id" jdbcType="VARCHAR" property="order_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, c_user_id, c_reason, create_time, status, s_reason, sh_time, order_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_refund_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_refund_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.order.T_refund_apply">
+    insert into t_refund_apply (id, c_user_id, c_reason, 
+      create_time, status, s_reason, 
+      sh_time, order_id)
+    values (#{id,jdbcType=VARCHAR}, #{c_user_id,jdbcType=VARCHAR}, #{c_reason,jdbcType=VARCHAR}, 
+      #{create_time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{s_reason,jdbcType=VARCHAR}, 
+      #{sh_time,jdbcType=TIMESTAMP}, #{order_id,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.order.T_refund_apply">
+    insert into t_refund_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="c_user_id != null">
+        c_user_id,
+      </if>
+      <if test="c_reason != null">
+        c_reason,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="s_reason != null">
+        s_reason,
+      </if>
+      <if test="sh_time != null">
+        sh_time,
+      </if>
+      <if test="order_id != null">
+        order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_user_id != null">
+        #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_reason != null">
+        #{c_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="s_reason != null">
+        #{s_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="sh_time != null">
+        #{sh_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="order_id != null">
+        #{order_id,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.order.T_refund_apply">
+    update t_refund_apply
+    <set>
+      <if test="c_user_id != null">
+        c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="c_reason != null">
+        c_reason = #{c_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="s_reason != null">
+        s_reason = #{s_reason,jdbcType=VARCHAR},
+      </if>
+      <if test="sh_time != null">
+        sh_time = #{sh_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="order_id != null">
+        order_id = #{order_id,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.order.T_refund_apply">
+    update t_refund_apply
+    set c_user_id = #{c_user_id,jdbcType=VARCHAR},
+      c_reason = #{c_reason,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      s_reason = #{s_reason,jdbcType=VARCHAR},
+      sh_time = #{sh_time,jdbcType=TIMESTAMP},
+      order_id = #{order_id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

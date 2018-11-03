@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.commerce.T_translateMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.commerce.T_translate">
+    <id column="translate_id" jdbcType="VARCHAR" property="translate_id" />
+    <result column="translate_name" jdbcType="VARCHAR" property="translate_name" />
+    <result column="price" jdbcType="REAL" property="price" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="translate_url" jdbcType="VARCHAR" property="translate_url" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="img_url" jdbcType="VARCHAR" property="img_url" />
+    <result column="reserved1" jdbcType="VARCHAR" property="reserved1" />
+    <result column="translate_type" jdbcType="VARCHAR" property="translate_type"></result>
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="BaseResultMapAndType" type="T_translate">
+    <association property="t_translate_type" column="translate_type" select="getTypeById"></association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    translate_id, translate_name, price, status, translate_url, create_time, introduction, 
+    img_url, reserved1,translate_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_translate
+    where translate_id = #{translate_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getTranslateList" parameterType="T_translate" resultMap="BaseResultMapAndType">
+    select
+    <include refid="Base_Column_List" />
+    from t_translate
+    <where>
+      <if test="translate_name!=null and translate_name!=''">
+        and translate_name like  CONCAT('%',#{translate_name},'%')
+      </if>
+    </where>
+  </select>
+  
+  <select id="getTypeById" resultType="T_translate_type" parameterType="String">
+    select * from t_translate_type where type_id=#{translate_type}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_translate
+    where translate_id = #{translate_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.commerce.T_translate">
+    insert into t_translate (translate_id, translate_name, price, 
+      status, translate_url, create_time, 
+      introduction, img_url, reserved1,translate_type
+      )
+    values (#{translate_id,jdbcType=VARCHAR}, #{translate_name,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
+      #{status,jdbcType=INTEGER}, #{translate_url,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP}, 
+      #{introduction,jdbcType=VARCHAR}, #{img_url,jdbcType=VARCHAR}, #{reserved1,jdbcType=VARCHAR},#{translate_type,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.commerce.T_translate">
+    insert into t_translate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="translate_id != null">
+        translate_id,
+      </if>
+      <if test="translate_name != null">
+        translate_name,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="translate_url != null">
+        translate_url,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="introduction != null">
+        introduction,
+      </if>
+      <if test="img_url != null">
+        img_url,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+      <if test="translate_type!=null">
+        translate_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="translate_id != null">
+        #{translate_id,jdbcType=VARCHAR},
+      </if>
+      <if test="translate_name != null">
+        #{translate_name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="translate_url != null">
+        #{translate_url,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="img_url != null">
+        #{img_url,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="translate_type!=null">
+        #{translate_type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wm.edu.model.commerce.T_translate">
+    update t_translate
+    <set>
+      <if test="translate_name != null">
+        translate_name = #{translate_name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=REAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="translate_url != null">
+        translate_url = #{translate_url,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="img_url != null">
+        img_url = #{img_url,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="translate_type!=null">
+        translate_type = #{translate_type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where translate_id = #{translate_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wm.edu.model.commerce.T_translate">
+    update t_translate
+    set translate_name = #{translate_name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=REAL},
+      status = #{status,jdbcType=INTEGER},
+      translate_url = #{translate_url,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      img_url = #{img_url,jdbcType=VARCHAR},
+      reserved1 = #{reserved1,jdbcType=VARCHAR},
+      translate_type = #{translate_type,jdbcType=VARCHAR}
+    where translate_id = #{translate_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

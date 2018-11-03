@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.edu.mapper.commerce.T_commerce_infoMapper">
+  <resultMap id="BaseResultMap" type="com.wm.edu.model.commerce.T_commerce_info">
+    <result column="commerce_id" jdbcType="VARCHAR" property="commerce_id" />
+    <result column="commerce_name" jdbcType="VARCHAR" property="commerce_name" />
+    <result column="commerce_type" jdbcType="VARCHAR" property="commerce_type" />
+    <result column="price" jdbcType="REAL" property="price" />
+    <result column="img_src" jdbcType="VARCHAR" property="img_src" />
+    <result column="commerce_introduction" jdbcType="VARCHAR" property="commerce_introduction" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="reserved1" jdbcType="VARCHAR" property="reserved1" />
+    <result column="reserved2" jdbcType="VARCHAR" property="reserved2" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="old_price" jdbcType="REAL" property="old_price" />
+    <result column="postage_price" jdbcType="REAL" property="postage_price" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.wm.edu.model.commerce.T_commerce_info">
+    <result column="commerce_details" jdbcType="LONGVARCHAR" property="commerce_details" />
+    <collection property="photoList" column="commerce_id" select="getPhotoById"></collection>
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="BaseResultMapType" type="T_commerce_info">
+    <association property="t_commodity_type" column="commerce_type" select="selectTypeById"></association>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    commerce_id, commerce_name, commerce_type, price, img_src, commerce_introduction,
+    status, reserved1, reserved2,create_time,old_price,postage_price,stock
+  </sql>
+  <sql id="Blob_Column_List">
+    commerce_details
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    *
+    from t_commerce_info
+    where commerce_id = #{commerce_id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectTypeById" parameterType="String" resultType="T_commodity_type">
+    select * from t_commodity_type where type_id=#{commerce_type}
+  </select>
+  <!--获取商品下面的图片-->
+  <select id="getPhotoById" parameterType="String" resultType="T_commodity_photo">
+      select * from t_commodity_photo where commodity_id=#{commerce_id} and img_type = 0 order by sort
+  </select>
+  <select id="getCommerceList" resultMap="BaseResultMapType" parameterType="T_commerce_info">
+    select
+    <include refid="Base_Column_List" />
+    from t_commerce_info
+    <where>
+      <if test="commerce_type!=null and commerce_type!=''">
+         and commerce_type = #{commerce_type}
+      </if>
+      <if test="commerce_name!=null and commerce_name!=''">
+        and commerce_name like  CONCAT('%',#{commerce_name},'%')
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="String">
+      delete from t_commerce_info where commerce_id=#{commerce_id}
+  </delete>
+  <insert id="insert" parameterType="com.wm.edu.model.commerce.T_commerce_info">
+    insert into t_commerce_info (commerce_id, commerce_name, commerce_type, 
+      price, img_src, commerce_introduction, 
+      status, reserved1, reserved2, 
+      create_time, old_price, postage_price, 
+      stock, commerce_details)
+    values (#{commerce_id,jdbcType=VARCHAR}, #{commerce_name,jdbcType=VARCHAR}, #{commerce_type,jdbcType=VARCHAR}, 
+      #{price,jdbcType=REAL}, #{img_src,jdbcType=VARCHAR}, #{commerce_introduction,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{reserved1,jdbcType=VARCHAR}, #{reserved2,jdbcType=VARCHAR}, 
+      #{create_time,jdbcType=TIMESTAMP}, #{old_price,jdbcType=REAL}, #{postage_price,jdbcType=REAL}, 
+      #{stock,jdbcType=INTEGER}, #{commerce_details,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wm.edu.model.commerce.T_commerce_info">
+    insert into t_commerce_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commerce_id != null">
+        commerce_id,
+      </if>
+      <if test="commerce_name != null">
+        commerce_name,
+      </if>
+      <if test="commerce_type != null">
+        commerce_type,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="img_src != null">
+        img_src,
+      </if>
+      <if test="commerce_introduction != null">
+        commerce_introduction,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+      <if test="reserved2 != null">
+        reserved2,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="old_price != null">
+        old_price,
+      </if>
+      <if test="postage_price != null">
+        postage_price,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="commerce_details != null">
+        commerce_details,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commerce_id != null">
+        #{commerce_id,jdbcType=VARCHAR},
+      </if>
+      <if test="commerce_name != null">
+        #{commerce_name,jdbcType=VARCHAR},
+      </if>
+      <if test="commerce_type != null">
+        #{commerce_type,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="img_src != null">
+        #{img_src,jdbcType=VARCHAR},
+      </if>
+      <if test="commerce_introduction != null">
+        #{commerce_introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null">
+        #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="old_price != null">
+        #{old_price,jdbcType=REAL},
+      </if>
+      <if test="postage_price != null">
+        #{postage_price,jdbcType=REAL},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="commerce_details != null">
+        #{commerce_details,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective">
+    update t_commerce_info
+    <set>
+      <if test="commerce_name != null">
+        commerce_name = #{commerce_name,jdbcType=VARCHAR},
+      </if>
+      <if test="commerce_type != null">
+        commerce_type = #{commerce_type,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=REAL},
+      </if>
+      <if test="img_src != null">
+        img_src = #{img_src,jdbcType=VARCHAR},
+      </if>
+      <if test="commerce_introduction != null">
+        commerce_introduction = #{commerce_introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null">
+        reserved2 = #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="old_price != null">
+        old_price = #{old_price,jdbcType=REAL},
+      </if>
+      <if test="postage_price != null">
+        postage_price = #{postage_price,jdbcType=REAL},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="commerce_details != null">
+        commerce_details = #{commerce_details,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where commerce_id = #{commerce_id,jdbcType=VARCHAR}
+  </update>
+</mapper>
